@@ -56,4 +56,21 @@ c++:升级
         ②参数数量不一样   默认参数不可以,但占位参数可以
         ③参数顺序不一样
 
+⭐ c和c++联合编译
+    extern "C" :以C语言的函数命名方式进行编译 (用extern "C" 包含所有函数接口)
+    #define
+    #ifdef __cplusplus
+    extern "C"
+    {
+    #endif
+        接口。。。。
+    #ifdef __cplusplus
+    } 
+    #endif
+
+⭐ c++内存管理
+    c语言的内存管理(堆空间):malloc free 
+    c++:new delete 堆内存空间 
+        new[] delete []s; 释放数组
+        new() delete s; 释放s值  //简单数据类型时可以直接使用这个delete s
 
