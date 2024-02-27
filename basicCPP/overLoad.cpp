@@ -16,19 +16,20 @@ const short size = 10;
 void add(int a)
 {
     std::cout<< "int :"<< a <<std::endl;
+   
 }
 
-void add(short a)
+int add(short a)
 {
     std::cout<< "short :" << a << std::endl;
+    return 1;
 }
 
 int main()
 {
-    //std::cout<< add(1, 2) <<std::endl;
-    //std::cout<< add(1.2, 2.2) <<std::endl;  /* 自动识别double类型 */
-
-    add(size);
+    add(1);//函数无返回值
+    //add(size);  /* 自动识别short类型 */
+    std::cout<< "short :" << add(size) << std::endl;//函数有返回值
     return 0;
 }
 

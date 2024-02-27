@@ -2,7 +2,8 @@
 #include <cstdlib>
 #include <cstring>
 
-#if 0
+#if 0 
+//C语言
 int main()
 {
     /* 一维数组 */

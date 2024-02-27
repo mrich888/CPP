@@ -3,7 +3,7 @@
 void swap(int &a, int &b)
 {
     int temp = a;
-    b = a;
+    a = b;
     a = temp;
 }
 
@@ -19,6 +19,16 @@ int main()
     // int *b = &a;
     // int c = 20;
     // b = c; //这里b又指向c了
+
+    /*  引用
+    int a = 10;
+    int &b = a;
+
+    std :: cout << a << std :: endl;
+    std :: cout << &a << std :: endl;
+    std :: cout << b << std :: endl;
+    std :: cout << &b << std :: endl;
+    */
 
     int a = 20;
     int b = 10;
