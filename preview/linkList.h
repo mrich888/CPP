@@ -1,17 +1,22 @@
 #ifndef __LINKLIST_H_
 #define __LINKLIST_H_
 
+class Node
+{
+public:
+    int data;
+    Node *next;
+    Node()
+};
+
 class LinkList
 {
 private:
-    int data;
-    int len;
-    char *next;
     char *head;
     char *tail;
     
 public:
-    void init();//初始化
+    void init();
     void headInsert();
     void taildelete();
 

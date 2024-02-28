@@ -1,14 +1,18 @@
 #include <iostream>
 #include "linkList.h"
 
-int LinkList :: init()
+void LinkList :: init()
 {
- qqqq
+    printf("初始化\n");
+    head 
 }
 
-int LinkList :: headInsert()
+void LinkList :: headInsert()
 {
-    111
+    
 }
-void headInsert();
-void taildelete();
+
+void LinkList :: taildelete()
+{
+
+}
