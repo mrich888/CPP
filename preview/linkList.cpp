@@ -3,7 +3,7 @@
 
 int LinkList :: init()
 {
-
+ qqqq
 }
 
 int LinkList :: headInsert()
