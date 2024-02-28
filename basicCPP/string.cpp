@@ -10,7 +10,6 @@ int main()
     std :: string s1 = s + "world";
     std :: cout << s1 << std :: endl;
 
-    
 
     return 0;
 }

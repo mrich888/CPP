@@ -7,6 +7,5 @@ int main()
 
     std :: cout << a << std :: endl;
     
-    ///dddddddd
     return 0;
 }
