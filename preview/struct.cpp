@@ -57,6 +57,7 @@ int main()
     strcpy(stu1.name, "zhangsan");
     stu1.age = 22;
     stu1.printStu();
+    
 
     delete []stu1.name;
     

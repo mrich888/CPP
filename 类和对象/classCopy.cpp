@@ -79,3 +79,19 @@ int main()
     
     std :: cout << s.GetAge() << std :: endl;
 }
+class classCopy
+{
+private:
+    /* data */
+public:
+    classCopy(/* args */);
+    ~classCopy();
+};
+
+classCopy::classCopy(/* args */)
+{
+}
+
+classCopy::~classCopy()
+{
+}
