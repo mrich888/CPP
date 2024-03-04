@@ -10,11 +10,17 @@ public:
         std :: cout << "构造函数" << std :: endl;
 
     }
+
     //析构函数
     ~Test()
     {
         count--;
         std :: cout << "析构函数" << std :: endl;
+    }
+
+    static void func() //static可以修饰跟类内私有属性无关的函数，以达到共享 静态函数跟内存无关，故不能访问私有属性
+    {
+        std :: cout << "hello word" << std :: endl;
     }
 
 };
