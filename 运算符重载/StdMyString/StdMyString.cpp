@@ -1,8 +1,8 @@
-#if 0
 #include <iostream>
 #include <cstring>
 #include "StdMyString.h"
 
+#if 1
 //无参构造 
 StdMyString::StdMyString()
 {
@@ -36,7 +36,7 @@ StdMyString::StdMyString(const char *str)
 }
 
 //拷贝构造 
-StdMyString::StdMyString(const StdMyString &str)
+StdMyString::StdMyString(const StdMyString & str)
 {
     std :: cout << "拷贝构造！\n" << std :: endl;
     //深拷贝 -- 自定义    浅拷贝 -- 系统自动生成
@@ -46,10 +46,10 @@ StdMyString::StdMyString(const StdMyString &str)
     memset(s, 0, this->capacity);
     strcpy(this->s, str.s);
 }
- 
+
+
 StdMyString StdMyString :: operator+(const StdMyString & str)
 {
-    std :: cout << "+\n" << std :: endl;
     StdMyString result(*this);
     result.size = this->size + str.size;
     if (result.size < result.capacity)
@@ -62,15 +62,55 @@ StdMyString StdMyString :: operator+(const StdMyString & str)
         char *newStr = new char[result.capacity];
         strcpy(newStr, this->s);
         strcat(newStr, str.s);
-        delete []result.s;
+        delete []result.s;//记得释放原来的空间
         result.s = newStr;//复制指针给另一个，使两个指向同一个地址
     }
     return result;
 }
 
-StdMyString& StdMyString::operator+=(const StdMyString &str)
+StdMyString& StdMyString::operator=(const StdMyString &str)
 {
+    this->size = str.size;
+    this->capacity = str.capacity;
+    delete []this->s;
+    this->s = new char[str.capacity];
+    strcpy(this->s ,str.s);
+
+    return *this;//返回的是一个对象，对象作为左值发生拷贝   为减少发生拷贝构造，可以修改返回的是一个引用
+}
+
+StdMyString& StdMyString::operator+=(StdMyString & str)
+{
+    /* 使用自己重构的+ =*/
+    /* +返回值就是一个字符串 */
+    /* 将返回的这个字符串拷贝给他自己，然后返回一个引用就减少了开辟内存 */
     *this = *this + str;
+    return *this;
+}
+
+StdMyString StdMyString::operator-(const StdMyString &str)
+{
+    StdMyString result(*this);
+    /* 起始位置  */
+    char *deleteS = strstr(result.s, str.s);//s指向找到相同的的字符串的位置
+    while (deleteS != nullptr)
+    {
+        /* 结束位置 */
+        char *backS = deleteS + str.size;
+        while (*backS != '\0')
+        {
+            *deleteS++ = *backS++;
+        }
+        *deleteS = '\0';//在结尾加\0是个好习惯哦
+        deleteS = strstr(result.s, str.s);
+    }
+
+    return result;
+}
+
+StdMyString& StdMyString::operator-=(const StdMyString &str)
+{
+    *this = *this - str;
     return *this;
 }
 
@@ -91,41 +131,12 @@ StdMyString& StdMyString::operator+=(const char c)
     return *this;
 }
 
+/* 将int类型以字符串形式输出 */
 StdMyString StdMyString::Number(int a)
 {
     StdMyString s;
     sprintf(s.s, "%d", a);
     return s;
-}
-
-StdMyString StdMyString::operator-(const StdMyString &str)
-{
-    StdMyString result(*this);
-    char *deleteS = strstr(result.s, str.s);//s指向找到相同的的字符串的位置
-    while (deleteS != nullptr)
-    {
-        char *backS = deleteS + str.size;
-        while (*backS != '\0')
-        {
-            *deleteS++ = *backS++;
-        }
-        *deleteS = '\0';
-        deleteS = strstr(result.s, str.s);
-    }
-
-    return result;
-}
-
-StdMyString& StdMyString::operator=(const StdMyString &str)
-{
-    std :: cout << "赋值运算符重载！\n" << std :: endl;
-    this->size = str.size;
-    this->capacity = str.capacity;
-    delete []this->s;
-    this->s = new char[str.capacity];
-    strcpy(this->s ,str.s);
-
-    return *this;//返回的是一个对象，对象作为左值发生拷贝   为减少发生拷贝构造，可以修改返回的是一个引用
 }
 
 bool StdMyString::operator==(const StdMyString &str)
@@ -156,8 +167,11 @@ bool StdMyString::operator||(const StdMyString &str)
 
 char &StdMyString::operator[](int index)
 {
-    return *this->s;
-    // TODO: 在此处插入 return 语句
+    if (index < 0 || index >= this->size)
+    {
+        return;
+    }
+    return this->s[index];
 }
 
 StdMyString::operator int()
@@ -170,14 +184,11 @@ StdMyString::operator double()
     return atof(this->s);
 }
 
-// 析构函数
-StdMyString::~StdMyString()
-{
-    std :: cout << "析构构造！\n" << std :: endl;
-    this->size = 0;
-    this->capacity = 0;
-    delete []this->s;
-}
+/* 字符串列表切割 */
+// StdMyString splite1(const StdMyString& str)
+// {
+//     StdMyString result *this;
+// }
 
 /* 输出函数 */
 std::ostream &operator<<(std::ostream &os, const StdMyString &str)
@@ -187,12 +198,8 @@ std::ostream &operator<<(std::ostream &os, const StdMyString &str)
     return os;
 }
 
-
 std::istream &operator>>(std::istream &is, StdMyString &str)
 {
-    // char temp[1024] = {0};
-    // is >> temp;
-    // str = temp;
     char c = '\0';
     while ((c= getchar()) != '\n')
     {
@@ -200,19 +207,104 @@ std::istream &operator>>(std::istream &is, StdMyString &str)
     }
     
     return is;
-    // TODO: 在此处插入 return 语句
+}
+
+// 析构函数
+StdMyString::~StdMyString()
+{
+    std :: cout << "析构构造！\n" << std :: endl;
+    this->size = 0;
+    this->capacity = 0;
+    delete []this->s;
 }
 
 
-MyStringList std:: ostream &operator<<(std::ostream &os, const MyStringList &str)
+
+
+MyStringList::MyStringList()
+{
+    this->size = 0;
+    this->capacity = 15;
+    this->string = new StdMyString[this->capacity];
+}
+
+MyStringList& MyStringList :: operator+=(const StdMyString& str)
+{
+    /* 先判断容量 */
+    if (this->size == this->capacity)
+    {
+        this->capacity = 2 * this->capacity;
+        StdMyString *newPtr = new StdMyString[this->capacity];//开辟新的内存空间
+        for (int idx = 0; idx < this->size; idx++)//需要把之前的字符串拷贝到新的空间内
+        {
+            newPtr[idx] = this->string[idx];
+            delete []this->string;//删掉之前的内存
+            this->string = newPtr;//将替换新的
+        }
+    }
+    /* 刚传进来的插进去 */
+    this->string[this->size++] = str;
+    return *this;
+}
+
+ /* 删除列表中的一个字符串 */
+void MyStringList :: RemoveByIndex(int index)
+{
+    /* 判断合不合法 */
+    if (index < 0 || index > this->size)
+    {
+        return;
+    }
+    for(int idx = index; idx < (this->size - 1); idx++)
+    {
+        this->string[idx] = this->string[idx + 1];
+    }
+    this->size--;
+}
+
+MyStringList& MyStringList :: operator-=(const StdMyString& str)
+{
+    for (int idx = 0; idx < this->size; idx++)
+    {
+        if (this->string[idx] == str)
+        {
+            RemoveByIndex(idx);
+            idx--;//避免检查不到覆盖在当前
+        }
+    }
+    return *this;
+}
+
+StdMyString& MyStringList :: operator[](int index)
+{
+    if (index < 0 || index >= this->size)
+    {
+        return;
+    }
+    
+    return this->string[index];
+}
+
+std::ostream& operator<<(std::ostream& os, const MyStringList& list)
 {
     for(int idx; idx < list.size; idx++)
     {
         os << list.string[idx] << std :: endl;
     }
-    // TODO: 在此处插入 return 语句
 }
+
+MyStringList::~MyStringList()
+{
+    this->size = 0;
+    this->capacity = 0;
+    this->string;
+}
+
+
 #endif
+
+
+#if 0
 
 #include "StdMyString.h"
 #include <cstring>
@@ -455,7 +547,7 @@ MyStringList &MyStringList::operator-=(const StdMyString &str)
 {
     for(int idx = 0; idx < this->size; idx++)
     {
-        this->string[idx] == str;
+        this->string[idx] == str; //有些问题吧
         RemoveByIndex(idx);
         idx--;
     }
@@ -474,16 +566,5 @@ std::ostream &operator<<(std::ostream &os, const MyStringList &list)
     return os;
 }
 
-// MyStringList::MyStringList()
-// {
-//     this->size = 0;
-//     this->capacity = 15;
-//     this->string = new StdMyString[this->capacity];
-// }
+#endif
 
-// MyStringList::~MyStringList()
-// {
-//     this->size = 0;
-//     this->capacity = 0;
-//     this->string;
-// }
