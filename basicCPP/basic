@@ -70,7 +70,7 @@ c++:升级
 
 ⭐ c++内存管理
     c语言的内存管理(堆空间):malloc free 
-    c++:new delete 堆内存空间 
+    c++:new delete 堆内存空间  throw抛出异常, 主函数中去捕捉异常try...touch...
         new[] delete []s; 释放数组
         new() delete s; 释放s值  //简单数据类型时可以直接使用这个delete s
 
