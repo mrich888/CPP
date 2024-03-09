@@ -67,7 +67,7 @@ int main()
 
 
 #if 1
-    /* auto_ptr 的使用 */
+    /* auto_ptr 的使用 不适用于数组*/
     auto_ptr<Person> p1(new Person);    // p1 = new Person[]
 
     // p1->run()    // 1

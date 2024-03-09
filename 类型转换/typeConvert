@@ -1,0 +1,5 @@
+类型转换：
+    const_cast:将const转成非constant
+    dynamic_cast:有安全检测
+    reinterpret_cast:
+    static_cast:将非const转换成const
