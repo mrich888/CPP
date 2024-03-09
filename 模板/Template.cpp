@@ -1,4 +1,7 @@
 #include <iostream>
+#include <memory>
+
+
 
 class Point
 {
@@ -41,4 +44,7 @@ int main()
     point2.m_y = 14.3;
     
     Point point3 = add(point1, point2);
+
+    
 }
+
