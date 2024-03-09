@@ -68,6 +68,7 @@ public:
     int  AVLTreeChangeHeight(AVLTreeNode<Item> * node);//调整高度
     int  levorotation(AVLTreeNode<Item> * node);//左旋
     int  dextrorotation(AVLTreeNode<Item> * node);//右旋
+    int  revolveInSame(AVLTreeNode<Item> * grant, AVLTreeNode<Item> * parent, AVLTreeNode<Item> * child);
     int  AVLTreeChangeBalance(AVLTreeNode<Item> * node);//调整平衡
 
     bool AVLTreeInsert(Item data);//插入
@@ -161,6 +162,16 @@ inline int AVLTree<Item>::AVLTreeChangeHeight(AVLTreeNode<Item> *node)
 template <typename Item>
 inline int AVLTree<Item>::levorotation(AVLTreeNode<Item> *node)
 {
+    AVLTreeNode<Item> *parent = node->m_right;
+    AVLTreeNode<Item> *child = parent->m_left;
+
+    /* 断指针 */
+    parent->m_left = node;
+    node->m_left = child;
+
+    /* 维护其他的指针 */
+    revolveInSame(grant, parent, child);
+
     return 0;
 }
 
@@ -168,6 +179,51 @@ inline int AVLTree<Item>::levorotation(AVLTreeNode<Item> *node)
 template <typename Item>
 inline int AVLTree<Item>::dextrorotation(AVLTreeNode<Item> *node)
 {
+    AVLTreeNode<Item> *parent = node->m_left;
+    AVLTreeNode<Item> *child = parent->m_right;
+
+    /* 断指针 */
+    parent->m_right = node;
+    node->m_right = child;
+
+    /* 维护其他的指针 */
+    revolveInSame(grant, parent, child);
+
+    return 0;
+}
+
+/* 左右旋转后相同的维护部分 */
+template <typename Item>
+inline int AVLTree<Item>::revolveInSame(AVLTreeNode<Item> *grant, AVLTreeNode<Item> *parent, AVLTreeNode<Item> *child)
+{
+    /* parent成为新的根结点 */
+    parent->m_parent = grant->m_parent; //新的根结点找到当前的父结点
+    /* 当前结点是它的父结点的左孩子 */
+    if (currentNodeIsLeft(grant))
+    {
+        grant->m_parent->m_left = parent;//父结点与新的根结点相认
+    }
+    else if (currentNodeIsRight(grant))
+    {
+        grant->m_parent->m_right = parent;
+    }
+    else
+    {
+        this->m_root = parent;
+    }
+    
+    /* 当前结点需要与当前的根结点相认 */
+    grant->m_parent = parent;
+    /* 最后考虑孩子结点存不存在 */
+    if (child)
+    {
+        child->m_parent = grant;//孩子结点与当前结点也就是他现在的父结点相认
+    }
+    
+    /* 平衡后当前节点和新的根结点需要调整平衡 */
+    AVLTreeChangeHeight(parent);
+    AVLTreeChangeHeight(grant);
+
     return 0;
 }
 
@@ -182,7 +238,7 @@ inline int AVLTree<Item>::AVLTreeChangeBalance(AVLTreeNode<Item> *node)
         if (currentNodeIsLeft(node))
         {
             /* RR */
-
+        
         }
         else/* LR */
         {
@@ -196,6 +252,7 @@ inline int AVLTree<Item>::AVLTreeChangeBalance(AVLTreeNode<Item> *node)
         if (currentNodeIsRight(node))
         {
             /* LL */
+            levorotation(node);
 
         }/* RL*/
         else
