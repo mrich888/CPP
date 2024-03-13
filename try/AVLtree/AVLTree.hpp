@@ -65,14 +65,15 @@ public:
     bool AVLTreeIsBalance(AVLTreeNode<Item> * node);//是否平衡
     bool currentNodeIsLeft(AVLTreeNode<Item> * node);//当前结点是左子树
     bool currentNodeIsRight(AVLTreeNode<Item> * node);//当前结点是右子树
+    int  getTailerChildNode(AVLTreeNode<Item> * node);//当前结点的更高的子树
     int  AVLTreeChangeHeight(AVLTreeNode<Item> * node);//调整高度
     int  levorotation(AVLTreeNode<Item> * node);//左旋
     int  dextrorotation(AVLTreeNode<Item> * node);//右旋
-    int  revolveInSame(AVLTreeNode<Item> * grant, AVLTreeNode<Item> * parent, AVLTreeNode<Item> * child);
+    int  revolveInSame(AVLTreeNode<Item> * grant, AVLTreeNode<Item> * parent, AVLTreeNode<Item> * child);//维护断裂的指针
     int  AVLTreeChangeBalance(AVLTreeNode<Item> * node);//调整平衡
-
     bool AVLTreeInsert(Item data);//插入
-    void AVLTreeInsertAfter(AVLTreeNode<Item> * node);
+    void AVLTreeInsertAfter(AVLTreeNode<Item> * node);//插入之后的调整
+    AVLTreeNode<Item>  *baseValGetNode(Item data);
     bool AVLTreeIsContainAppointVal(Item data);
 
     ~AVLTree(){};
@@ -144,6 +145,37 @@ inline bool AVLTree<Item>::currentNodeIsRight(AVLTreeNode<Item> *node)
     
     return false;
 }
+
+//当前结点的更高的子树
+template <typename Item>
+inline int AVLTree<Item>::getTailerChildNode(AVLTreeNode<Item> *node)
+{
+    int leftHeight = node->m_left == nullptr ? 0 : node->m_left->m_height;
+    int rightHeight = node->m_right == nullptr ? 0 : node->m_right->m_height;
+    if (leftHeight > rightHeight)
+    {
+        return node->m_left;
+    }
+    else if (leftHeight < rightHeight)
+    {
+        return node->m_right;
+    }
+    else
+    {
+       /* 左右相等 */
+       if (currentNodeIsLeft(node))
+       {
+            return node->m_left;
+       }
+       else if (currentNodeIsRight(node))
+       {
+            return node->m_right;
+       }
+    }
+    
+    return 0;
+}
+
 
 /* 调整当前结点高度 */
 template <typename Item>
@@ -229,35 +261,40 @@ inline int AVLTree<Item>::revolveInSame(AVLTreeNode<Item> *grant, AVLTreeNode<It
 
 /* 调整平衡 */
 template <typename Item>
-inline int AVLTree<Item>::AVLTreeChangeBalance(AVLTreeNode<Item> *node)
+inline int AVLTree<Item>::AVLTreeChangeBalance(AVLTreeNode<Item> *grant)
 {
+    /* 从这里就开始将用到的三个结点标记 -- 得看哪边高 */
+    AVLTreeNode<Item> *parent = getTailerChildNode(grant);
+    AVLTreeNode<Item> *child = getTailerChildNode(parent);
     /* L */
-    if (currentNodeIsLeft(node->m_parent))
+    if (currentNodeIsLeft(parent))
     {
         /* LL */
-        if (currentNodeIsLeft(node))
+        if (currentNodeIsLeft(child))
         {
             /* RR */
-        
+            dextrorotation(grant);
         }
         else/* LR */
         {
             /* RL */
-
+            levorotation(parent);
+            dextrorotation(grant);
         }
     }/* R */
-    else
+    else if(currentNodeIsRight(parent))
     {
         /* RR */
         if (currentNodeIsRight(node))
         {
             /* LL */
             levorotation(node);
-
         }/* RL*/
         else
         {
             /* LR */
+            dextrorotation(parent);
+            levorotation(grant);
         }  
     }
     
@@ -315,7 +352,7 @@ inline bool AVLTree<Item>::AVLTreeInsert(Item data)
     }
     m_size++;
     /* ⭐todo...AVLT添加之后应该判断是否平衡并进行调整 */
-    
+    AVLTreeInsertAfter(node);
     return true;
 }
 
@@ -333,10 +370,43 @@ inline void AVLTree<Item>::AVLTreeInsertAfter(AVLTreeNode<Item> *node)
         }
         else
         {
-            /* 调整平衡 */
+            /* 调整平衡 -- 当前结点是最小不平衡点 */
+            AVLTreeChangeBalance(node);
         }
         node = node->m_parent;
     }
     
     
+}
+
+/* 根据值获取指定结点 */
+template <typename Item>
+inline AVLTreeNode<Item> * AVLTree<Item>::baseValGetNode(Item data)
+{
+    AVLTreeNode<Item> *travelNode = this->m_root;
+    int cmp = 0;
+    while (travelNode)
+    {
+        cmp = this->m_compare(data, travelNode->m_data);
+        if (cmp > 0)
+        {
+            travelNode = travelNode->m_right;
+        }
+        else if (cmp < 0)
+        {
+            travelNode = travelNode->m_left;
+        }
+        else
+        {
+            return travelNode;
+        }
+    }
+    return nullptr;
+}
+
+/* 是否包含指定结点 */
+template <typename Item>
+inline bool AVLTree<Item>::AVLTreeIsContainAppointVal(Item data)
+{
+    return baseValGetNode(data) == nullptr ? false : true;
 }

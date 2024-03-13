@@ -1,0 +1,22 @@
+STL:standard template library 标准模板库
+
+容器：数据结构
+迭代器：
+算法：处理问题的方法
+仿函数
+适配器
+空间配置器
+
+
+
+容器：
+顺序容器：
+    vector:单端动态数组:尾部插入  
+    deque:双端动态数组
+    list:双向链表,支持双向变动++ --, 支持插入和删除
+    forward_list:单链表
+排序容器：
+    set:排序插入,且不能插入重复元素
+
+
+pair:对组 key - value
