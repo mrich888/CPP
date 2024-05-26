@@ -1,0 +1,50 @@
+自动类型推导 
+auto
+decltype
+移动语义：夺取对象内存,减少内存损耗
+万能引用
+
+将亡值是一个右值
+
+move:把左值变成右值
+
+万能引用：模板参数要同时能接收左值和右值
+T&& 
+模板+&& = 万能引用
+
+完美转发:解决模板函数中的参数都被当年成是左值的问题 forward + T
+
+列表初始化
+
+可调用对象function
+
+函数绑定器
+bind
+
+委托构造和继承继承
+
+final:被修饰的类不能再被继承,有再没有子类
+
+delete
+
+constexpr 常量表达式  编译器进行计算
+
+enum class
+
+sizeof
+
+static_assert  断言关键字
+
+explicit
+
+std::thread:线程库
+RALL
+
+lock_guard:更轻量化，不能手动控制锁
+
+unique_lock：能手动控制锁
+
+atomic:原子  基本变量 线程安全 性能要远高于互斥锁
+
+async: 纯异步操作 -- 别管我
+deferred: 延后操作,直到get操作

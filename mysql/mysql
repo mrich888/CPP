@@ -1,0 +1,29 @@
+远程连接
+
+mysql -u root -p 3306
+
+索引：堆数据库的排序的一种数据结构:排序树  B+树
+
+改变表结构：
+alter table student add index index_id(id)
+
+alter table 表明 add index 索引名
+
+删除索引:drop index_id from student;
+
+主键会自动添加唯一索引
+
+索引优缺点:
+1.查找效率高
+2.排序速度更快
+
+缺点:
+1.额外的物理空间占用
+2.插入和删除增加了维护的成本
+
+什么时候构建索引？
+1.经常查找的字段
+2.经常排序的字段
+3.
+
+

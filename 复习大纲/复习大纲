@@ -1,0 +1,80 @@
+Linux:
+常用命令：
+    文件相关
+    打包相关
+    用户相关
+    网络相关
+    进线程序相关
+
+编译器相关：
+gcc
+gdb
+
+工具相关：
+makefile:
+    伪目标
+shell:背两个常用模板
+
+C语言:
+数据类型的大小：
+语句:for  while do...while
+关键字 : static const extern
+数据和指针 : 数组指针  指针数组
+            函数指针  指针函数
+            常量指针  指针常量 
+字符数组 : string strlen strcat strcpy
+    字符串匹配 字符串逆序
+复合数据类型 : struct 字节对齐  union enum
+
+Linux 系统编程 :
+I/O : 缓冲区 行缓冲 全缓冲 几种让行缓冲输出的方式
+文件编程 : 库函数 和 系统编程 ?
+        fopen f_
+进程变成 : fork  vfork 区别 atexit
+
+IPC:进程间通信 管道 消息队列 信号 信号量 共享内存
+线程编程 进程和线程的区别?
+线程同步 锁 条件变量 信号量  死锁 解决死锁
+网络编程 TCP UDP的区别?
+    三次握手 四次挥手
+    滑动窗口是什么
+    丢包和粘包
+    socket 第二参数 bind listen accept
+    大并发是什么？怎么实现的？服务器最多多少个客户端？  压力测试
+
+数据库: DBMS   如何保证数据安全？ 两个线程同时修改一个函数  sql
+
+C++:
+封装 继承 多态  三大特点，是什么，为什么，怎么做，向上转型，
+重载，重写，名词遮蔽
+static  explicit final delete c++11
+虚函数的实现原理  虚函数表和虚函数指针
+static 初始化列表 c++11
+模板 偏特化 和普通函数的优先级哪个高 
+stl : 容器 底层逻辑 迭代器失效 算法库 sort借用快排的二分治思想
+QT:
+    信号和槽  connect  信号 信号发出者 信号 信号发出者/lambda表达式
+    QT thread : 三种
+    xml json  为什么用xml 为什么数据传输用json
+    继承树 内存
+    pro : 模块 资源文件
+    http?
+    tcp服务器
+    ready read有什么问题
+
+mysql  B+树  索引  事务
+设计模式
+池化技术 : 线程池 内存池 连接池
+编码 UTF-8 JDK BASE64
+传输加密
+
+
+
+
+
+
+
+
+
+
+

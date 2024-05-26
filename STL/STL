@@ -20,3 +20,6 @@ STL:standard template library 标准模板库
 
 
 pair:对组 key - value
+
+仿函数：类模仿函数的调用方法
+怎么用:通过重载()让类的对象有一种类似函数调用的形式
